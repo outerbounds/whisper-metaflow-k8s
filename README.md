@@ -44,7 +44,7 @@ $ docker push registry.gitlab.com/shri_javadekar/scratch/whisper-metaflow
 To unleash the power of the cloud with [Metaflow's Kubernetes decorator](https://docs.metaflow.org/scaling/remote-tasks/kubernetes), uncomment the lines with `@kubernetes` in the [flow code](./whisper_flow.py). Make sure to change the image argument to the container registry you just pushed to!
     
 ## Flow time!
-After preparing your Kubernetes resources like you want, run this command from your terminal. 
+After preparing your Kubernetes resources like you want, save the `./whisper_flow.py` file, and run this command from your terminal. 
 ```
 $ python3 whisper_flow.py run --with kubernetes:image=registry.gitlab.com/shri_javadekar/scratch/whisper-metaflow
 ```
