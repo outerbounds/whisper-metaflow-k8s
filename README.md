@@ -1,6 +1,6 @@
 # OpenAI Whisper on Metaflow 👋
 
-This repository will help you optimize Open AI's [Whisper](https://github.com/openai/whisper) in workflows run on the [Outerbounds Platform](https://outerbounds.com/blog/announcing-outerbounds-platform/). It builds on our earlier repository to help you [Get started with Whisper with Metaflow](https://github.com/outerbounds/whisper-metaflow). This implementation focuses on using Kubernetes resources to unlock new levels of scale and processing throughput. 
+This repository will help you optimize Open AI's [Whisper](https://github.com/openai/whisper) in workflows run on the [Outerbounds Platform](https://outerbounds.com/blog/announcing-outerbounds-platform/). It builds on our earlier repository to help you [Get started with Whisper and Metaflow](https://github.com/outerbounds/whisper-metaflow). This implementation focuses on using Kubernetes resources to unlock new levels of scale and processing throughput. 
 
 <img src="./static/Whisper-Cover.png" width=600> </img>
 
