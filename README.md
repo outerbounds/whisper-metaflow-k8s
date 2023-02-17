@@ -10,12 +10,25 @@ This repository will help you optimize Open AI's [Whisper](https://github.com/op
 |------------------|-------------|
 | [Dockerfile](./Dockerfile)   | Dockerfile to create a docker image for running OpenAI Whisper |
 | [Makefile](./Makefile)   | Makefile for building the docker image |
-| [youtube_video_transcriber.py](./youtube_video_transcriber.py)   | CLI tool for creating a transcript of a given YouTube URL and given model |
-| [whisper_flow.py](./whisper_flow.py) | Metaflow flow for creating transcripts of using whispers tiny and large model s|
+| [youtube\_video\_transcriber.py](./youtube_video_transcriber.py)   | CLI tool for creating a transcript of a given YouTube URL and given model |
+| [whisper_flow.py](./whisper_flow.py) | Metaflow flow for creating transcripts of using whispers tiny and large models |
 
-# Configure flow dependencies ⚙️
+# Run the flow ▶️
 
-This section assumes you have Docker setup and running locally. If you don't have Docker installed, please follow the instructions [here](https://docs.docker.com/get-docker/).
+<img src="./static/MLSys-02.png" width=600> </img>
+
+## Running with Kubernetes resources
+To unleash the power of the cloud with [Metaflow's Kubernetes decorator](https://docs.metaflow.org/scaling/remote-tasks/kubernetes), run this command from your terminal. 
+
+This uses an already built Docker image ready for running this flow.
+
+```
+$ python3 whisper_flow.py run --with kubernetes:image=public.ecr.aws/outerbounds/whisper-metaflow:latest
+```
+
+# Customizing flow dependencies ⚙️
+
+This section assumes you have Docker setup and running locally. If you don't have Docker installed, please follow the instructions [here](https://docs.docker.com/get-docker/). If there are other packages to be installed or changes to be made in existing ones, update the Dockerfile.
 
 ## Create the docker image
 With Docker running, build the image specified in the `./Dockerfile`. 
@@ -24,29 +37,35 @@ With Docker running, build the image specified in the `./Dockerfile`.
 $ make build
 ...
  => => writing image sha256:23be1b523a3404d8bee8e4c8ac29f7160ac7ad7090d48c567010a34cb9f2666e                                                           0.0s
- => => naming to docker.io/library/whisper-metaflow:v1alpha1                                                                                           0.0s
+ => => naming to docker.io/library/whisper-metaflow                                                                                                    0.0s
 ```
 
 ## Tag and push the docker image to a repository.
 Then tag the resultant image and push it to an image registry. In this example, we are using GitLab's container registry.
 ```
-$ docker tag sha256:23be1b523a3404d8bee8e4c8ac29f7160ac7ad7090d48c567010a34cb9f2666e registry.gitlab.com/shri_javadekar/scratch/whisper-metaflow:latest
+$ docker tag sha256:23be1b523a3404d8bee8e4c8ac29f7160ac7ad7090d48c567010a34cb9f2666e whisper-metaflow:latest
 ...
 
-$ docker push registry.gitlab.com/shri_javadekar/scratch/whisper-metaflow
+$ docker push whisper-metaflow
 ```
 
-# Run the flow ▶️
+## Run the flow with customized image
 
-<img src="./static/MLSys-02.png" width=600> </img>
-
-## Running with Kubernetes resources
-To unleash the power of the cloud with [Metaflow's Kubernetes decorator](https://docs.metaflow.org/scaling/remote-tasks/kubernetes), uncomment the lines with `@kubernetes` in the [flow code](./whisper_flow.py). Make sure to change the image argument to the container registry you just pushed to!
-    
-## Flow time!
-After preparing your Kubernetes resources like you want, save the `./whisper_flow.py` file, and run this command from your terminal. 
 ```
-$ python3 whisper_flow.py run --with kubernetes:image=registry.gitlab.com/shri_javadekar/scratch/whisper-metaflow
+$ python3 whisper_flow.py run --with kubernetes:image=whisper-metaflow:latest
+```
+
+## Run the flow with customized image and changed CPU/Memory resources
+
+```
+$ python3 whisper_flow.py run --with kubernetes:image=whisper-metaflow:latest,cpu=4,memory=8192
+```
+
+## Alternate approach
+Instead of running the flow with cli options above, you could also change the whisper_flow.py file and add the `@kubernetes` decorator to appropriate steps and then simply run the flow as:
+
+```
+$ python3 whisper_flow.py run
 ```
   
 # Get Help 🤗
